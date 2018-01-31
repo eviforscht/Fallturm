@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui widgets charts multimedia multimediawidgets charts serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,10 +25,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    logger.cpp \
+    fallturmexception.cpp \
+    settingsdialog.cpp \
+    plot.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    main.h \
+    logger.h \
+    fallturmexception.h \
+    settingsdialog.h \
+    plot.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    settingsdialog.ui
