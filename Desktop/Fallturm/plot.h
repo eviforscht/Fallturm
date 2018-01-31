@@ -15,8 +15,12 @@
 #include <QtCharts\qchart.h>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QVector>
 
 #include <mutex>
+
+#define LISTENER_INTERVALL 100
+#define LED_COUNT 8
 
 QT_CHARTS_BEGIN_NAMESPACE
 class QSplineSeries;
@@ -28,9 +32,26 @@ QT_CHARTS_USE_NAMESPACE
 class Plot : public QChart
 {
 public:
+
+    struct Entry {
+        unsigned int led;
+        unsigned int height;
+        unsigned long timeInMillis;
+    };
+
     Plot(QString serialPortName);
+
+public slots:
+    void handleTimeout();
+    void showNewPlot();
+signals:
+    void dataAvailable();
 private:
     void init();
+    void renderNewPlot();
+    QSerialPort* port;
+    QTimer intervalTimer;
+    QVector<Entry> entries;
 
 };
 

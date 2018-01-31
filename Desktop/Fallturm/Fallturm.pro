@@ -29,7 +29,8 @@ SOURCES += \
     logger.cpp \
     fallturmexception.cpp \
     settingsdialog.cpp \
-    plot.cpp
+    plot.cpp \
+    funktion.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -37,7 +38,8 @@ HEADERS += \
     logger.h \
     fallturmexception.h \
     settingsdialog.h \
-    plot.h
+    plot.h \
+    funktion.h
 
 FORMS += \
         mainwindow.ui \

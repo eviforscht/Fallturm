@@ -21,10 +21,10 @@ void SettingsDialog::init()
     //Initialize boxes
     QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
     for(QSerialPortInfo port : ports)
-        ui->serialInterfaceComboBox->addItem(port.description());
+        ui->seriellesInterfaceComboBox->addItem(port.description());
 
     //Set default values
-    ui->serialInterfaceComboBox->setCurrentText(
+    ui->seriellesInterfaceComboBox->setCurrentText(
                 Fallturm::settings->value("interface/serial",
                                       QSerialPortInfo::availablePorts().first().description()).toString());
     ui->baudRateComboBox->setCurrentText(Fallturm::settings->value("interface/serial/baudrate/","9600").toString());
