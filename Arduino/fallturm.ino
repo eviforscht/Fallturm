@@ -62,7 +62,7 @@ void loop() {
     delay(10);
   }
   time = millis();
-  Serial.print("Höhe 24 cm; Sensor 1; ");
+  Serial.print("24;0;");
   Serial.println(time);
   
   while (button3State == LOW) { 
@@ -70,49 +70,56 @@ void loop() {
     delay(10);
   }
   time = millis();
-  Serial.print("Höhe 48 cm; Sensor 2; ");
+  Serial.print("48;1;");
   Serial.println(time);
-  while (button3State == LOW) { 
-    button3State = digitalRead(button4Pin);
+  
+  while (button4State == LOW) { 
+    button4State = digitalRead(button4Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Höhe 72 cm; Sensor 3; ");
+  Serial.print("72;2;");
   Serial.println(time);
-  while (button3State == LOW) { 
-    button3State = digitalRead(button5Pin);
+  
+  while (button5State == LOW) { 
+    button5State = digitalRead(button5Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Höhe 96 cm; Sensor 4; ");
+  Serial.print("96;3;");
   Serial.println(time);
-  while (button3State == LOW) { 
-    button3State = digitalRead(button6Pin);
+  
+  while (button6State == LOW) { 
+    button6State = digitalRead(button6Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Höhe 120 cm; Sensor 5; ");
+  Serial.print("120;4;");
   Serial.println(time);
-  while (button3State == LOW) { 
-    button3State = digitalRead(button7Pin);
+  
+  while (button7State == LOW) { 
+    button7State = digitalRead(button7Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Höhe 144 cm; Sensor 6; ");
+  Serial.print("144;5;");
   Serial.println(time);
-  while (button3State == LOW) { 
-    button3State = digitalRead(button8Pin);
+  
+  while (button8State == LOW) { 
+    button8State = digitalRead(button8Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Höhe 168 cm; Sensor 7; ");
+  Serial.print("168;6;");
   Serial.println(time);
-  while (button3State == LOW) { 
-    button3State = digitalRead(button9Pin);
+  
+  
+  while (button9State == LOW) { 
+    button9State = digitalRead(button9Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Höhe 192 cm; Sensor 8; ");
+  Serial.print("192;7;");
   Serial.println(time);
 
 }
