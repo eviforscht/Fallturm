@@ -7,11 +7,14 @@
 #include "main.h"
 #include "logger.h"
 #include "settingsdialog.h"
+#include "plot.h"
 
 namespace Ui {
 class MainWindow;
 }
 
+class Plot;
+class SettingsDialog;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -22,11 +25,13 @@ public:
 
 public slots:
     void updateToSettings();
+    void changeSettings();
 private:
     void init();
 
     Ui::MainWindow *ui;
     SettingsDialog* settingsDialog;
+    Plot *plot;
 
 };
 

@@ -21,10 +21,10 @@ void SettingsDialog::init()
     //Initialize boxes
     QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
     for(QSerialPortInfo port : ports)
-        ui->seriellesInterfaceComboBox->addItem(port.description());
+        ui->serialInterfaceComboBox->addItem(port.description());
 
     //Set default values
-    ui->seriellesInterfaceComboBox->setCurrentText(
+    ui->serialInterfaceComboBox->setCurrentText(
                 Fallturm::settings->value("interface/serial",
                                       QSerialPortInfo::availablePorts().first().description()).toString());
     ui->baudRateComboBox->setCurrentText(Fallturm::settings->value("interface/serial/baudrate/","9600").toString());
@@ -37,12 +37,20 @@ void SettingsDialog::updateSettings()
 {
     Logger::log << L_INFO << "Updating settings...\n";
     Fallturm::settings->setValue("interface/serial",serialDescriptionToPortName(ui->serialInterfaceComboBox->currentText()));
-    Fallturm::settings->setValue("interface/serial/baudrate",ui->bautRateComboBox->currentText());
+    Fallturm::settings->setValue("interface/serial/baudrate",ui->baudRateComboBox->currentText());
 
     Logger::log << L_INFO << "Saved following settings:\n";
     for(QString key : Fallturm::settings->allKeys())
-        Logger::log << L_INFO << key << " : " << Main::settings->value(key).toString() << "\n";
+        Logger::log << L_INFO << key << " : " << Fallturm::settings->value(key).toString() << "\n";
     this->accept();
 
     emit settingsChanged();
+}
+
+QString SettingsDialog::serialDescriptionToPortName(QString description)
+{
+    for(QSerialPortInfo pI : QSerialPortInfo::availablePorts())
+        if(pI.description() == description)
+            return pI.portName();
+    return "";
 }

@@ -3,7 +3,6 @@
 
 #include "main.h"
 
-#include <QObject>
 #include <QtCharts/QAbstractAxis>
 #include <QtCharts/QSplineSeries>
 #include <QtCharts/QValueAxis>
@@ -31,21 +30,25 @@ QT_CHARTS_USE_NAMESPACE
 
 class Plot : public QChart
 {
-public:
+    Q_OBJECT
 
+public:
     struct Entry {
         unsigned int led;
         unsigned int height;
         unsigned long timeInMillis;
     };
-
+    Plot() = default;
     Plot(QString serialPortName);
+    ~Plot();
 
 public slots:
     void handleTimeout();
     void showNewPlot();
+
 signals:
     void dataAvailable();
+
 private:
     void init();
     void renderNewPlot();

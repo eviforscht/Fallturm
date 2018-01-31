@@ -27,6 +27,7 @@ private:
     void init();
 
     Ui::SettingsDialog *ui;
+    QString serialDescriptionToPortName(QString description);
 };
 
 #endif // SETTINGSDIALOG_H

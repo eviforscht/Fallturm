@@ -1,4 +1,5 @@
 #include "plot.h"
+#include "funktion.h"
 
 #include <QStringList>
 #include <QString>
@@ -10,6 +11,11 @@ Plot::Plot(QString serialPortName)
     init();
 }
 
+
+Plot::~Plot()
+{
+
+}
 void Plot::init()
 {
     QObject::connect(&intervalTimer, &QTimer::timeout, this, &Plot::handleTimeout);
@@ -23,9 +29,42 @@ void Plot::init()
 
 void Plot::renderNewPlot()
 {
-    QPoint p1,p2,p3;
+    //Doing math...
+    long startTime = 0;
+    for(Entry e : entries)
+        if(e.led == 0)
+            startTime = e.timeInMillis;
 
-    entries.clear();
+    QVector<Koordinate> coordinates;
+    for(Entry e : entries)
+    {
+        Koordinate k(e.height,e.timeInMillis-startTime);
+        coordinates.push_back(k);
+    }
+    Funktion f = Funktion::init(coordinates);
+    double a = f.a();
+    double b = f.b();
+    double c = f.c();
+
+    //Drawing data
+    QLineSeries *exact = new QLineSeries(this);
+    for(Koordinate k : coordinates)
+        exact->append(k.getX(),k.getY());
+
+    QLineSeries *mathIdeal = new QLineSeries(this);
+    for(int i=0;i+=10;i<plotArea().width())
+    {
+        double x = i;
+        double y = (a * (x * x)) + (b * x) + c;
+        mathIdeal->append(x,y);
+    }
+
+    //formatting plot
+    addSeries(exact);
+    addSeries(mathIdeal);
+    createDefaultAxes();
+    setTitle("Fallturm-Auswertung");
+
 }
 
 void Plot::handleTimeout()
@@ -43,7 +82,6 @@ void Plot::handleTimeout()
 
 void Plot::showNewPlot()
 {
-    QStringList entries;
     while(true)
     {
         QByteArray lineInBytes = port->readLine();

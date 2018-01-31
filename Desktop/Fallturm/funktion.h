@@ -4,28 +4,29 @@
 #include <QString>
 #include <QVector>
 
-#include "logger.h"
 #include "main.h"
+
 class Koordinate
 {
 public:
     Koordinate() = default;
-    double getX() const;
-    void setX(double value);
+    Koordinate(unsigned long xk,unsigned long yk) : x(xk), y(yk) {}
+    unsigned long getX() const;
+    void setX(unsigned long value);
 
-    double getY() const;
-    void setY(double value);
+    unsigned long getY() const;
+    void setY(unsigned long value);
 
 private:
-    double x;
-    double y;
+    unsigned long x;
+    unsigned long y;
 
 };
 
 class Parabel
 {
 public:
-    Parabel(Koordinate a, Koordinate b, Koordinate c) : first(a), second(b), third(c) {}
+    Parabel(Koordinate a, Koordinate b, Koordinate c);
     Parabel() = default;
     double getA() const;
     double getB() const;
@@ -50,10 +51,18 @@ public:
     Funktion() = default;
     Funktion(Parabel p, double s) : m_a(p.getA()),m_b(p.getB()),m_c(p.getC()),m_s(s) {}
     Funktion(double a, double b, double c, double s) : m_a(a), m_b(b), m_c(c),m_s(s) {}
+    static Funktion init(QVector<Koordinate> data);
+
+    double a() const;
+
+    double b() const;
+
+    double c() const;
+
+    double s() const;
 
 private:
 
-    Funktion init(QVector<Koordinate> data);
     double m_a;
     double m_b;
     double m_c;
@@ -67,7 +76,7 @@ namespace Mathe {
     double hoch(double zahl, double exp);
     double betrag(double value);
     double hoch(double zahl, int exp);
-    Funktion minS(LinkedList<Funktion>data);
+    Funktion minS(QVector<Funktion>data);
 
 }
 

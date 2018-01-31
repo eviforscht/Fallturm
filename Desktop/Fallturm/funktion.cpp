@@ -1,6 +1,8 @@
 #include "funktion.h"
 
-Parabel::Parabel(Koordinate a, Koordinate b, Koordinate c) : first(a), second(b), third(c)
+#include <cmath>
+
+Parabel::Parabel(Koordinate ka, Koordinate kb, Koordinate kc) : first(ka), second(kb), third(kc)
 {
     a = ((first.getY() - second.getY()) * (first.getX() - third.getX())
          - (first.getY() - third.getY()) * (first.getX() - second.getX())
@@ -17,7 +19,7 @@ Parabel::Parabel(Koordinate a, Koordinate b, Koordinate c) : first(a), second(b)
 namespace Mathe
 {
 double round(double d, int stelle) {
-    return QString::number(d,stelle).toDouble();
+    return (std::round(d*hoch(10,stelle))/hoch(10,stelle));
 }
 
 double hoch(double zahl, double exp)
@@ -43,26 +45,25 @@ double hoch(double zahl, int exp)
     return hoch(zahl,exp*1.0);
 }
 
-Funktion minS(LinkedList<Funktion>data)
+Funktion minS(QVector<Funktion>data)
 {
-    double d = Double.MAX_VALUE;
-    Funktion ret = null;
+    double d = std::numeric_limits<double>::max();
+    Funktion ret;
     for(int i = 0;i<data.size();i++)
     {
         try
         {
-            Funktion f = data.get(i);
+            Funktion f = data.at(i);
 
-            if(f.getS()<d&&f!=null)
+            if(f.s()<d)
             {
-                d= f.getS();
+                d= f.s();
                 ret = f;
             }
 
-        }catch(Exception e)
+        }catch(FallturmException e)
         {
-            System.err.println(i);
-            e.printStackTrace();
+            Logger::log << L_ERROR << e.what() << "\n";
         }
 
     }
@@ -79,22 +80,22 @@ double square(double zahl)
 
 //END_NAMESPACE_MATHE
 
-double Koordinate::getX() const
+unsigned long Koordinate::getX() const
 {
     return x;
 }
 
-void Koordinate::setX(double value)
+void Koordinate::setX(unsigned long value)
 {
     x = value;
 }
 
-double Koordinate::getY() const
+unsigned long Koordinate::getY() const
 {
     return y;
 }
 
-void Koordinate::setY(double value)
+void Koordinate::setY(unsigned long value)
 {
     y = value;
 }
@@ -131,7 +132,7 @@ Koordinate Parabel::getThird() const
 
 Funktion Funktion::init(QVector<Koordinate> data)
 {
-    collection.clear();
+    QVector<Funktion> collection;
     Logger::log << L_INFO << "Starte Berechnung...\n";
 
     int p,q,r;
@@ -170,7 +171,7 @@ Funktion Funktion::init(QVector<Koordinate> data)
 
             }
 
-            collection.add(Funktion(a1,b1,c1,t));
+            collection.push_back(Funktion(a1,b1,c1,t));
 
             q++;
 
@@ -185,5 +186,25 @@ Funktion Funktion::init(QVector<Koordinate> data)
 
     return sMin;
 
+}
+
+double Funktion::s() const
+{
+    return m_s;
+}
+
+double Funktion::c() const
+{
+    return m_c;
+}
+
+double Funktion::b() const
+{
+    return m_b;
+}
+
+double Funktion::a() const
+{
+    return m_a;
 }
 
