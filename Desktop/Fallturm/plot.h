@@ -55,6 +55,7 @@ private:
     QSerialPort* port;
     QTimer intervalTimer;
     QVector<Entry> entries;
+    QByteArray buffer;
 
 };
 

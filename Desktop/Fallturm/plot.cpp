@@ -22,6 +22,27 @@ void Plot::init()
     QObject::connect(this,&Plot::dataAvailable,this,&Plot::showNewPlot);
     intervalTimer.setInterval(LISTENER_INTERVALL);
 
+    //Initializing serial interface
+    try
+    {
+
+        if(!port->open(QIODevice::ReadWrite))
+            throw FallturmException(QString("Failed to open serial interface!"));
+
+        port->setBaudRate(Fallturm::settings->value("interface/serial/baudrate","9600").toInt());
+        port->setDataBits(QSerialPort::Data8);
+        port->setParity(QSerialPort::NoParity);
+        port->setStopBits(QSerialPort::OneStop);
+        port->setFlowControl(QSerialPort::NoFlowControl);
+
+
+        Logger::log << L_INFO << "Initialized serial interface " << port->portName() << " with baudrate " << port->baudRate() << "\n";
+    }catch(...)
+    {
+        QErrorMessage error;
+        error.showMessage("Failed to open serial interface!");
+        Logger::log << L_ERROR << "Failed to open serial interface!\n";
+    }
 
 
     intervalTimer.start();
@@ -39,6 +60,7 @@ void Plot::renderNewPlot()
     for(Entry e : entries)
     {
         Koordinate k(e.height,e.timeInMillis-startTime);
+        Logger::log << L_DEBUG << k.getX() << " : " << k.getY() << "\n";
         coordinates.push_back(k);
     }
     Funktion f = Funktion::init(coordinates);
@@ -71,7 +93,7 @@ void Plot::handleTimeout()
 {
     if(!(port->isOpen() && port->isReadable()))
     {
-        Logger::log << L_WARN << "Serial interface not readable!\n";
+        Logger::log << L_WARN << "Serial interface not available!\n";
         return;
     }
 
@@ -84,10 +106,17 @@ void Plot::showNewPlot()
 {
     while(true)
     {
-        QByteArray lineInBytes = port->readLine();
+        QByteArray lineInBytes = buffer + port->readLine();
         if(lineInBytes.length() <= 0)
             break;
         QString  line = QString::fromUtf8(lineInBytes);
+        if(!line.endsWith("\n"))
+        {
+            buffer.append(line);
+            return;
+        }
+        buffer.clear();
+        Logger::log << L_DEBUG << "Read: " << line << "\n";
         QStringList lineSplits = line.split(";");
         Entry entry;
         entry.height = lineSplits.at(0).toInt();
@@ -97,6 +126,7 @@ void Plot::showNewPlot()
             if(e.led == entry.led)
                 return;
         entries.push_back(entry);
+        Logger::log << L_DEBUG << "Extracted: " << entry.led << ";" << entry.height << ";" << entry.timeInMillis << "\n";
         if(entries.size() == LED_COUNT)
             renderNewPlot();
     }
