@@ -62,7 +62,7 @@ void loop() {
     delay(10);
   }
   time = millis();
-  Serial.print("Sensor 1; ");
+  Serial.print("Höhe 24 cm; Sensor 1; ");
   Serial.println(time);
   
   while (button3State == LOW) { 
@@ -70,49 +70,49 @@ void loop() {
     delay(10);
   }
   time = millis();
-  Serial.print("Sensor 2; ");
+  Serial.print("Höhe 48 cm; Sensor 2; ");
   Serial.println(time);
   while (button3State == LOW) { 
     button3State = digitalRead(button4Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Sensor 3; ");
+  Serial.print("Höhe 72 cm; Sensor 3; ");
   Serial.println(time);
   while (button3State == LOW) { 
     button3State = digitalRead(button5Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Sensor 4; ");
+  Serial.print("Höhe 96 cm; Sensor 4; ");
   Serial.println(time);
   while (button3State == LOW) { 
     button3State = digitalRead(button6Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Sensor 5; ");
+  Serial.print("Höhe 120 cm; Sensor 5; ");
   Serial.println(time);
   while (button3State == LOW) { 
     button3State = digitalRead(button7Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Sensor 6; ");
+  Serial.print("Höhe 144 cm; Sensor 6; ");
   Serial.println(time);
   while (button3State == LOW) { 
     button3State = digitalRead(button8Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Sensor 7; ");
+  Serial.print("Höhe 168 cm; Sensor 7; ");
   Serial.println(time);
   while (button3State == LOW) { 
     button3State = digitalRead(button9Pin);
     delay(10);
   }
   time = millis();
-  Serial.print("Sensor 8; ");
+  Serial.print("Höhe 192 cm; Sensor 8; ");
   Serial.println(time);
 
 }
