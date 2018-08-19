@@ -2,6 +2,7 @@
 #include "ui_settingsdialog.h"
 
 #include <QSerialPortInfo>
+#include <QMessageBox>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -18,6 +19,19 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::init()
 {
+    //check if any serial interfaces are available
+    if(QSerialPortInfo::availablePorts().isEmpty())
+    {
+        QMessageBox *msgBox = new QMessageBox(this);
+        msgBox->setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
+        msgBox->setText("Es wurde kein serielles Interface gefunden. Bitte schließen Sie den Arduino an!");
+        int answer = msgBox->exec();
+        if (answer == QMessageBox::Cancel)
+            exit(EXIT_SUCCESS);
+        else
+            return init();
+    }
+
     //Initialize boxes
     QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
     for(QSerialPortInfo port : ports)
@@ -26,7 +40,7 @@ void SettingsDialog::init()
     //Set default values
     ui->serialInterfaceComboBox->setCurrentText(
                 Fallturm::settings->value("interface/serial",
-                                      QSerialPortInfo::availablePorts().first().description()).toString());
+                                          QSerialPortInfo::availablePorts().first().description()).toString());
     ui->baudRateComboBox->setCurrentText(Fallturm::settings->value("interface/serial/baudrate/","9600").toString());
 
     //connects
