@@ -45,5 +45,6 @@ void MainWindow::updateToSettings()
 
 void MainWindow::changeSettings()
 {
-    settingsDialog->showNormal();
+    settingsDialog->setWindowModality(Qt::ApplicationModal);
+    settingsDialog->exec();
 }

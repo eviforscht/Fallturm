@@ -22,6 +22,7 @@ void SettingsDialog::init()
     //check if any serial interfaces are available
     if(QSerialPortInfo::availablePorts().isEmpty())
     {
+        Logger::log << L_ERROR << "No serial interface is  connected!\n";
         QMessageBox *msgBox = new QMessageBox(this);
         msgBox->setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
         msgBox->setText("Es wurde kein serielles Interface gefunden. Bitte schließen Sie den Arduino an!");
