@@ -61,17 +61,19 @@ void Plot::renderNewPlot()
     Logger::log << L_DEBUG << "Rendering new plot...\n";
     //Doing math...
     long startTime = 0;
+    int startDistance = 0;
     for(Entry e : entries)
         if(e.led == 0)
         {
             startTime = e.timeInMillis;
+            startDistance = e.height;
             break;
         }
 
     QVector<Koordinate> coordinates;
     for(Entry e : entries)
     {
-        Koordinate k(e.timeInMillis-startTime,e.height);
+        Koordinate k(e.timeInMillis-startTime,e.height-startDistance);
         Logger::log << L_DEBUG << k.getX() << " : " << k.getY() << "\n";
         coordinates.push_back(k);
     }
