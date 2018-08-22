@@ -71,7 +71,7 @@ void Plot::renderNewPlot()
     QVector<Koordinate> coordinates;
     for(Entry e : entries)
     {
-        Koordinate k(e.height,e.timeInMillis-startTime);
+        Koordinate k(e.timeInMillis-startTime,e.height);
         Logger::log << L_DEBUG << k.getX() << " : " << k.getY() << "\n";
         coordinates.push_back(k);
     }
@@ -131,30 +131,27 @@ void Plot::handleTimeout()
 
 void Plot::showNewPlot()
 {
-    while(true)
+    QByteArray lineInBytes = buffer + port->readLine();
+    if(lineInBytes.length() <= 0)
+        return;
+    QString  line = QString::fromUtf8(lineInBytes);
+    if(!line.endsWith("\n"))
     {
-        QByteArray lineInBytes = buffer + port->readLine();
-        if(lineInBytes.length() <= 0)
-            break;
-        QString  line = QString::fromUtf8(lineInBytes);
-        if(!line.endsWith("\n"))
-        {
-            buffer.append(line);
-            return;
-        }
-        buffer.clear();
-        Logger::log << L_DEBUG << "Read: " << line << "\n";
-        QStringList lineSplits = line.split(";");
-        Entry entry;
-        entry.height = lineSplits.at(0).toInt();
-        entry.led = lineSplits.at(1).toInt();
-        entry.timeInMillis = lineSplits.at(2).toLong();
-        for(Entry e : entries)
-            if(e.led == entry.led)
-                return;
-        entries.push_back(entry);
-        Logger::log << L_DEBUG << "Extracted: " << entry.led << ";" << entry.height << ";" << entry.timeInMillis << "\n";
-        if(entries.size() == LED_COUNT)
-            renderNewPlot();
+        buffer.append(line);
+        return;
     }
+    buffer.clear();
+    Logger::log << L_DEBUG << "Read: " << line << "\n";
+    QStringList lineSplits = line.split(";");
+    Entry entry;
+    entry.height = lineSplits.at(0).toInt();
+    entry.led = lineSplits.at(1).toInt();
+    entry.timeInMillis = lineSplits.at(2).toLong();
+    for(Entry e : entries)
+        if(e.led == entry.led)
+            return;
+    entries.push_back(entry);
+    Logger::log << L_DEBUG << "Extracted: " << entry.led << ";" << entry.height << ";" << entry.timeInMillis << "\n";
+    if(entries.size() == LED_COUNT)
+        renderNewPlot();
 }
