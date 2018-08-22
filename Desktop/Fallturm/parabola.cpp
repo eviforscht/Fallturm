@@ -46,16 +46,16 @@ Parabola::Parabola(QVector<Point> points)
         x += points[i].x;
 
     //create Matrix A
-    arma::mat A(n, n);
-    A(1,1) = x4;
-    A(1,2) = x3;
-    A(1,3) = x2;
-    A(2,1) = x3;
-    A(2,2) = x2;
-    A(2,3) = x;
-    A(3,1) = x2;
-    A(3,2) = x;
-    A(3,3) = double(n);
+    arma::mat A(3, 3);
+    A(0,0) = x4;
+    A(0,1) = x3;
+    A(0,2) = x2;
+    A(1,0) = x3;
+    A(1,1) = x2;
+    A(1,2) = x;
+    A(2,0) = x2;
+    A(2,1) = x;
+    A(2,2) = double(n);
 
     //column vector b
 
@@ -79,7 +79,7 @@ Parabola::Parabola(QVector<Point> points)
         bool success = arma::solve(x_vec, A, b_vec);
         if (success == false)
             throw success;
-        setCoefficients(x_vec(1), x_vec(2), x_vec(3));
+        setCoefficients(x_vec(0), x_vec(1), x_vec(2));
     } catch (std::runtime_error &e) {
         std::cerr << "runtime error: " << e.what();
     } catch(...){
