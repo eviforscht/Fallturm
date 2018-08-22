@@ -5,3 +5,5 @@ CONFIG += qt warn_on depend_includepath testcase
 TEMPLATE = app
 
 SOURCES +=  tst_testcase.cpp
+
+unix:!macx: LIBS += -larmadillo
