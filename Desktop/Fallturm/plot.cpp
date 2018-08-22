@@ -110,6 +110,8 @@ void Plot::renderNewPlot()
     addSeries(exact);
     //addSeries(mathIdeal);
     createDefaultAxes();
+    axisX()->setTitleText("t[ms]");
+    axisY()->setTitleText("s[cm]");
     setTitle("Fallturm-Auswertung");
     Logger::log << L_DEBUG << "Rendering completed.\n";
 
