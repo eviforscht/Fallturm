@@ -29,6 +29,7 @@ SOURCES += \
     fallturmexception.cpp \
     settingsdialog.cpp \
     plot.cpp \
+    mainwindow.cpp \
     funktion.cpp
 
 HEADERS += \
