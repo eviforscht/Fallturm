@@ -9,9 +9,9 @@
 #include <QtCore/QRandomGenerator>
 #include <QtCore/QDebug>
 #include <QtCore/qtimer.h>
-#include <QtSerialPort\qserialport.h>
-#include <QtCore\qtimer.h>
-#include <QtCharts\qchart.h>
+#include <QtSerialPort/qserialport.h>
+#include <QtCore/qtimer.h>
+#include <QtCharts/qchart.h>
 #include <QSerialPort>
 #include <QSerialPortInfo>
 #include <QVector>
