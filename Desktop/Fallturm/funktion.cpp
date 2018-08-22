@@ -1,6 +1,7 @@
 #include "funktion.h"
 
 #include <cmath>
+#include <memory>
 
 Parabel::Parabel(Koordinate ka, Koordinate kb, Koordinate kc) : first(ka), second(kb), third(kc)
 {
@@ -47,6 +48,7 @@ double hoch(double zahl, int exp)
 
 Funktion minS(QVector<Funktion>data)
 {
+    Logger::log << L_INFO << "Suche Funktion mit geringster Abweichung...\n";
     double d = std::numeric_limits<double>::max();
     Funktion ret;
     for(int i = 0;i<data.size();i++)
@@ -67,6 +69,7 @@ Funktion minS(QVector<Funktion>data)
         }
 
     }
+    Logger::log << L_INFO << "Suche beendet.\n";
     return ret;
 
 }
@@ -183,7 +186,7 @@ Funktion Funktion::init(QVector<Koordinate> data)
         q = p+1;
     }
     Funktion sMin = Mathe::minS(collection);
-
+    Logger::log << L_DEBUG << "Berechnung beendet\n";
     return sMin;
 
 }

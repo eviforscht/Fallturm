@@ -5,6 +5,13 @@
 #include <QString>
 #include <QPoint>
 
+#include <mutex>
+
+//global variables
+std::mutex renderInProgress;
+std::mutex updateData;
+const unsigned int STEP_SIZE = 10;
+
 Plot::Plot(QString serialPortName)
 {
     port = new QSerialPort(serialPortName);
@@ -50,11 +57,16 @@ void Plot::init()
 
 void Plot::renderNewPlot()
 {
+    std::lock_guard<std::mutex> guard(renderInProgress);
+    Logger::log << L_DEBUG << "Rendering new plot...\n";
     //Doing math...
     long startTime = 0;
     for(Entry e : entries)
         if(e.led == 0)
+        {
             startTime = e.timeInMillis;
+            break;
+        }
 
     QVector<Koordinate> coordinates;
     for(Entry e : entries)
@@ -69,28 +81,43 @@ void Plot::renderNewPlot()
     double c = f.c();
 
     //Drawing data
+    Logger::log << L_DEBUG << "Drawing data...\n";
+    const unsigned int PLOT_WIDTH = plotArea().width();
+
+    //exakte Messwerte
     QLineSeries *exact = new QLineSeries(this);
+    exact->setName("Exakte Messwerte");
+    int pixelToDraw = 0;
+    int pixelDistancePerStep = PLOT_WIDTH / coordinates.size();
     for(Koordinate k : coordinates)
+    {
+        pixelToDraw+= pixelDistancePerStep;
         exact->append(k.getX(),k.getY());
+    }
 
     QLineSeries *mathIdeal = new QLineSeries(this);
-    for(int i=0;i+=10;i<plotArea().width())
+    mathIdeal->setName("idealisierte Messwerte");
+    Logger::log << L_DEBUG << "Drawing " << PLOT_WIDTH << " with " << STEP_SIZE <<" pixels distance...\n";
+    for(unsigned int pixelToDraw=0;pixelToDraw<PLOT_WIDTH;pixelToDraw+=STEP_SIZE)
     {
-        double x = i;
+        double x = pixelToDraw;
         double y = (a * (x * x)) + (b * x) + c;
         mathIdeal->append(x,y);
     }
 
     //formatting plot
+    Logger::log <<L_DEBUG << "Formatting plot...\n";
     addSeries(exact);
-    addSeries(mathIdeal);
+    //addSeries(mathIdeal);
     createDefaultAxes();
     setTitle("Fallturm-Auswertung");
+    Logger::log << L_DEBUG << "Rendering completed.\n";
 
 }
 
 void Plot::handleTimeout()
 {
+    std::lock_guard<std::mutex> guard(updateData);
     if(!(port->isOpen() && port->isReadable()))
     {
         Logger::log << L_WARN << "Serial interface not available!\n";
