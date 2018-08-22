@@ -45,9 +45,9 @@ FORMS += \
         mainwindow.ui \
     settingsdialog.ui
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/armadillo-9.100.5/ -larmadillo
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/armadillo-9.100.5/ -larmadillod
-else:unix: LIBS += -L$$PWD/lib/armadillo-9.100.5/ -larmadillo
+win32: LIBS += -L$$PWD/lib/armadillo-9.100.5/ -larmadillo
 
 INCLUDEPATH += $$PWD/lib/armadillo-9.100.5
 DEPENDPATH += $$PWD/lib/armadillo-9.100.5
+
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/lib/armadillo-9.100.5/armadillo.lib

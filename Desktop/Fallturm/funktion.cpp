@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <memory>
+#include <armadillo>
 
 Parabel::Parabel(Koordinate ka, Koordinate kb, Koordinate kc) : first(ka), second(kb), third(kc)
 {
