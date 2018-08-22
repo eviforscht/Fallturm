@@ -45,9 +45,8 @@ FORMS += \
         mainwindow.ui \
     settingsdialog.ui
 
-win32: LIBS += -L$$PWD/lib/armadillo-9.100.5/ -larmadillo
+win32: LIBS += -L$$PWD/lib/armadillo-9.100.5/ -llibarmadillo -llibblas -lliblapack
 
-INCLUDEPATH += $$PWD/lib/armadillo-9.100.5
-DEPENDPATH += $$PWD/lib/armadillo-9.100.5
+INCLUDEPATH += $$PWD/lib/armadillo-9.100.5/include
+DEPENDPATH += $$PWD/lib/armadillo-9.100.5/include
 
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/lib/armadillo-9.100.5/armadillo.lib
