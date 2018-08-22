@@ -30,7 +30,8 @@ SOURCES += \
     fallturmexception.cpp \
     settingsdialog.cpp \
     plot.cpp \
-    funktion.cpp
+    funktion.cpp \
+    parabola.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,8 +40,14 @@ HEADERS += \
     fallturmexception.h \
     settingsdialog.h \
     plot.h \
-    funktion.h
+    funktion.h \
+    parabola.h
 
 FORMS += \
         mainwindow.ui \
     settingsdialog.ui
+
+unix:!macx: LIBS += -larmadillo
+
+#TODO
+# add -O3 option for compiling, for better armadillo performance
