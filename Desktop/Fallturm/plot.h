@@ -58,5 +58,7 @@ private:
     QByteArray buffer;
 
 };
-
+extern std::mutex renderInProgress;
+extern std::mutex updateData;
+extern const unsigned int STEP_SIZE;
 #endif // PLOT_H
