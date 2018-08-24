@@ -10,12 +10,10 @@ struct Point{
     double x;
     double y;
 
-    bool compare_double(const double a, const double b, const double eps);
+    static bool compare_double(const double a, const double b, const double eps = std::numeric_limits<double>::epsilon());
     bool operator!=(Point& right);
     bool operator==(Point& right);
 };
-
-
 
 class Parabola
 {

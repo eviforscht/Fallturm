@@ -1,6 +1,6 @@
 #include "parabola.h"
 
-bool Point::compare_double(const double a, const double b, const double eps = std::numeric_limits<double>::epsilon())
+bool Point::compare_double(const double a, const double b, const double eps)
 {
     return std::abs(a - b) < eps;
 }
