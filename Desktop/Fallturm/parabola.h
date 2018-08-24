@@ -1,25 +1,32 @@
 #ifndef PARABOLA_H
 #define PARABOLA_H
 
-#include <cmath>
 #include <armadillo>
+#include <cmath>
+#include <limits>
 #include <QVector>
 
 struct Point{
     double x;
     double y;
+
+    bool compare_double(const double a, const double b, const double eps);
+    bool operator!=(Point& right);
+    bool operator==(Point& right);
 };
+
+
 
 class Parabola
 {
 public:
     Parabola();
     Parabola(double a, double b, double c): a(a), b(b), c(c) {}
-    Parabola(QVector<Point> points);
+    Parabola(const QVector<Point> points);
 
-    QVector<double> getCoefficients();
+    QVector<double> getCoefficients() const;
 
-    double f(double x);
+    double f(const double x) const;
 
 private:
     // parabola has the form of y=ax^2 + bx +c

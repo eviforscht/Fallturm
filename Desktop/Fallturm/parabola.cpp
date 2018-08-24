@@ -1,21 +1,36 @@
 #include "parabola.h"
 
+bool Point::compare_double(const double a, const double b, const double eps = std::numeric_limits<double>::epsilon())
+{
+    return std::abs(a - b) < eps;
+}
+
+bool Point::operator==(Point& right)
+{
+    return compare_double(this->x, right.x) && compare_double(this->y, right.y);
+}
+
+bool Point::operator!=(Point& right)
+{
+    return !(*this == right);
+}
+
 Parabola::Parabola()
 {
 
 }
 
-QVector<double> Parabola::getCoefficients()
+QVector<double> Parabola::getCoefficients() const
 {
     return QVector<double> {a, b, c};
 }
 
-double Parabola::f(double x)
+double Parabola::f(const double x) const
 {
     return a*x*x + b*x + c;
 }
 
-Parabola::Parabola(QVector<Point> points)
+Parabola::Parabola(const QVector<Point> points)
 {
     //solve Ax=b for x
     //x is col vector with a,b and c
