@@ -4,12 +4,12 @@ install:
   - set PROJECT_DIR=Desktop/Fallturm
   - set QTDIR=C:\Qt\5.10.1\msvc2017_64
   - choco install -y InnoSetup
-  - set PATH=%PATH%;%QTDIR%\bin;"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.15.26726\bin\Hostx64\x64";"C:\Program Files (x86)\Inno Setup 5"
+  - set PATH=%QTDIR%\bin;"C:\mingw-w64\i686-5.3.0-posix-dwarf-rt_v4-rev0";%PATH%;"C:\Program Files (x86)\Inno Setup 5"
   - cmd: echo %PATH%
 build_script:
   - cd Desktop/Fallturm
   - qmake Fallturm.pro
-  - nmake
+  - mingw64-make
 after_build:
   - windeployqt release/Fallturm.exe
   - cmd: cp LICENSE release/LICENSE.txt"
