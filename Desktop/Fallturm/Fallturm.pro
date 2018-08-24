@@ -29,7 +29,6 @@ SOURCES += \
     fallturmexception.cpp \
     settingsdialog.cpp \
     plot.cpp \
-    funktion.cpp \
     parabola.cpp \
     mainwindow.cpp
 
@@ -41,7 +40,6 @@ HEADERS += \
     fallturmexception.h \
     settingsdialog.h \
     plot.h \
-    funktion.h \
     parabola.h
 
 FORMS += \

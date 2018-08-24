@@ -1,5 +1,5 @@
 #include "plot.h"
-#include "funktion.h"
+#include "parabola.h"
 
 #include <QStringList>
 #include <QString>
@@ -10,7 +10,7 @@
 //global variables
 std::mutex renderInProgress;
 std::mutex updateData;
-const unsigned int STEP_SIZE = 10;
+const unsigned int STEP_SIZE = 1;
 
 Plot::Plot(QString serialPortName)
 {
@@ -59,42 +59,47 @@ void Plot::renderNewPlot()
 {
     std::lock_guard<std::mutex> guard(renderInProgress);
     Logger::log << L_DEBUG << "Rendering new plot...\n";
+
     //Doing math...
     long startTime = 0;
     int startDistance = 0;
+    int endDistance = 0;
     for(Entry e : entries)
+    {
         if(e.led == 0)
         {
             startTime = e.timeInMillis;
             startDistance = e.height;
             break;
         }
+        if(e.led == LED_COUNT-1)
+            endDistance = e.height;
+    }
 
-    QVector<Koordinate> coordinates;
+    QVector<FallturmMath::Point> points;
     for(Entry e : entries)
     {
-        Koordinate k(e.timeInMillis-startTime,e.height-startDistance);
-        Logger::log << L_DEBUG << k.getX() << " : " << k.getY() << "\n";
-        coordinates.push_back(k);
+        FallturmMath::Point p = {e.timeInMillis-startTime,e.height-startDistance};
+        Logger::log << L_DEBUG << p.x << " : " << p.y << "\n";
+        points.push_back(p);
     }
-    Funktion f = Funktion::init(coordinates);
-    double a = f.a();
-    double b = f.b();
-    double c = f.c();
+
+    //calculating mathematically perfect parabola
+    FallturmMath::Parabola p = FallturmMath::Parabola(points);
 
     //Drawing data
     Logger::log << L_DEBUG << "Drawing data...\n";
-    const unsigned int PLOT_WIDTH = plotArea().width();
+    const unsigned int PLOT_WIDTH = endDistance;
 
     //exakte Messwerte
     QLineSeries *exact = new QLineSeries(this);
     exact->setName("Exakte Messwerte");
     int pixelToDraw = 0;
-    int pixelDistancePerStep = PLOT_WIDTH / coordinates.size();
-    for(Koordinate k : coordinates)
+    int pixelDistancePerStep = PLOT_WIDTH / points.size();
+    for(FallturmMath::Point p : points)
     {
         pixelToDraw+= pixelDistancePerStep;
-        exact->append(k.getX(),k.getY());
+        exact->append(p.x,p.y);
     }
 
     QLineSeries *mathIdeal = new QLineSeries(this);
@@ -103,14 +108,14 @@ void Plot::renderNewPlot()
     for(unsigned int pixelToDraw=0;pixelToDraw<PLOT_WIDTH;pixelToDraw+=STEP_SIZE)
     {
         double x = pixelToDraw;
-        double y = (a * (x * x)) + (b * x) + c;
+        double y = (p.getA() * (x * x)) + (p.getB() * x) + p.getC();
         mathIdeal->append(x,y);
     }
 
     //formatting plot
     Logger::log <<L_DEBUG << "Formatting plot...\n";
     addSeries(exact);
-    //addSeries(mathIdeal);
+    addSeries(mathIdeal);
     createDefaultAxes();
     axisX()->setTitleText("t[ms]");
     axisY()->setTitleText("s[cm]");
