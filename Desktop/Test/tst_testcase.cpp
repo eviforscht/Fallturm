@@ -42,9 +42,14 @@ void testcase::cleanupTestCase()
 
 void testcase::test_case1()
 {
-    Parabola p(1,2,3);
-    QVector<double> test = {1,2,3};
-    QCOMPARE(p.getCoefficients(), test);
+    Parabola one(1,2,3);
+    QVector<double> val = {1,2,3};
+    QCOMPARE(one.getCoefficients(), val);
+
+    QVector<Point> werte = {{0.5,0.5}, {1,2}, {2,8}};
+    Parabola p(werte);
+    QVector<double> cof = {2, 0, 0};
+    QCOMPARE(p.getCoefficients(), cof);
 }
 
 QTEST_MAIN(testcase)
