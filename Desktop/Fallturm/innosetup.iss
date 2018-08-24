@@ -32,8 +32,6 @@ Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "lib\armadillo-9.100.5\blas_win64_MT.dll"; DestDir: "{app}";
-Source: "lib\armadillo-9.100.5\lapack_win64_MT.dll"; DestDir: "{app}";
 Source: "release\Fallturm.exe"; DestDir: "{app}";
 Source: "release\vc_redist.x64.exe";  DestDir: "{app}"; Flags: ignoreversion; AfterInstall: installRuntime
 Source: "release\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
