@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui widgets charts multimedia multimediawidgets charts serialport
-
+CONFIG   += c++11
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Fallturm
@@ -25,13 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
     logger.cpp \
     fallturmexception.cpp \
     settingsdialog.cpp \
     plot.cpp \
     funktion.cpp \
     parabola.cpp
+    mainwindow.cpp \
+
 
 HEADERS += \
         mainwindow.h \
@@ -47,7 +48,22 @@ FORMS += \
         mainwindow.ui \
     settingsdialog.ui
 
-unix:!macx: LIBS += -larmadillo
 
 #TODO
 # add -O3 option for compiling, for better armadillo performance
+
+#linux build options
+unix:!macx: LIBS += -larmadillo
+
+
+#windows build options
+win32{
+
+LIBS += -L$$PWD/lib/armadillo-9.100.5/ -lblas_win64_MT -llapack_win64_MT -larmadillo
+
+INCLUDEPATH += $$PWD/lib/armadillo-9.100.5/include/
+DEPENDPATH += $$PWD/lib/armadillo-9.100.5/include/
+INCLUDEPATH += $$PWD/lib/armadillo-9.100.5/include/armadillo_bits/
+DEPENDPATH += $$PWD/lib/armadillo-9.100.5/include/armadillo_bits/
+}
+
