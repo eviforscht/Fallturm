@@ -3,6 +3,7 @@
 
 // add necessary includes here
 #include <QVector>
+#include <limits>
 #include "../Fallturm/parabola.h"
 
 class testcase : public QObject
@@ -14,9 +15,9 @@ public:
     ~testcase();
 
 private slots:
-    void initTestCase();
-    void cleanupTestCase();
-    void test_case1();
+    void comparePoints();
+    void initParabolaWithCoefficients();
+    void calculateParabola();
 
 };
 
@@ -30,32 +31,32 @@ testcase::~testcase()
 
 }
 
-void testcase::initTestCase()
+void testcase::comparePoints()
 {
-
-}
-
-void testcase::cleanupTestCase()
-{
-
-}
-
-void testcase::test_case1()
-{
-
     Point p1 = {1.0, 2.0};
-    Point p2 = {1.0, 2.0};
+    Point p2;
+    p2.x = 1.0;
+    p2.y = 2;
 
-    QCOMPARE(p1 == p2, true);
+    QCOMPARE((p1 == p2), true);
+}
 
+void testcase::initParabolaWithCoefficients()
+{
     Parabola one(1,2,3);
     QVector<double> val = {1,2,3};
     QCOMPARE(one.getCoefficients(), val);
+}
 
+void testcase::calculateParabola()
+{
     QVector<Point> werte = {{0.5,0.5}, {1,2}, {2,8}};
     Parabola p(werte);
     QVector<double> cof = {2, 0, 0};
-    //QCOMPARE(p.getCoefficients(), cof);
+    QVector<double> computed_cof = p.getCoefficients();
+    for(int i = 0; i < cof.length(); i++)
+        //QCOMPARE(Point::compare_double(computed_cof[i], cof[i]), true);
+        QCOMPARE(Point::compare_double(computed_cof[i], cof[i], 1e-13), true);
 }
 
 QTEST_MAIN(testcase)

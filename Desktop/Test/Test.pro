@@ -11,3 +11,5 @@ unix:!macx: LIBS += -larmadillo
 
 HEADERS += \
     ../Fallturm/parabola.h
+
+unix:!macx: LIBS += -larmadillo
