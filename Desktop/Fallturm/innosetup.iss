@@ -36,7 +36,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "release\Fallturm.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "release\vc_redist.x64.exe";  DestDir: "{app}"; Flags: ignoreversionAfterInstall: installRuntime
+Source: "release\vc_redist.x64.exe";  DestDir: "{app}"; Flags: ignoreversion AfterInstall: installRuntime
 Source: "release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
