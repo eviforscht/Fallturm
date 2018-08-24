@@ -14,7 +14,6 @@ build_script:
 after_build:
   - windeployqt release/Fallturm.exe
   - cmd: cp LICENSE release/LICENSE.txt"
-  - cmd: cp lib/* release/
   - rm release/*.o
   - rm release/*.cpp
   - iscc innosetup.iss
