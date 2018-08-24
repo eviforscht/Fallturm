@@ -30,8 +30,8 @@ SOURCES += \
     settingsdialog.cpp \
     plot.cpp \
     funktion.cpp \
-    parabola.cpp
-    mainwindow.cpp \
+    parabola.cpp \
+    mainwindow.cpp
 
 
 HEADERS += \
