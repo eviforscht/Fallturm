@@ -12,7 +12,7 @@ build_script:
   - qmake Fallturm.pro -spec win32-msvc
   - nmake
 after_build:
-  - windeployqt release/Fallturm.exe
+  - windeployqt release/Fallturm.exe --compiler-runtime
   - cmd: cp LICENSE release/LICENSE.txt"
   - rm -f release/*.o
   - rm -f release/*.obj
