@@ -29,8 +29,10 @@ SOURCES += \
     fallturmexception.cpp \
     settingsdialog.cpp \
     plot.cpp \
-    mainwindow.cpp \
-    funktion.cpp
+    funktion.cpp \
+    parabola.cpp \
+    mainwindow.cpp
+
 
 HEADERS += \
         mainwindow.h \
@@ -39,12 +41,23 @@ HEADERS += \
     fallturmexception.h \
     settingsdialog.h \
     plot.h \
-    funktion.h
+    funktion.h \
+    parabola.h
 
 FORMS += \
         mainwindow.ui \
     settingsdialog.ui
 
+
+#TODO
+# add -O3 option for compiling, for better armadillo performance
+
+#linux build options
+unix:!macx: LIBS += -larmadillo
+
+
+#windows build options
+win32{
 
 LIBS += -L$$PWD/lib/armadillo-9.100.5/ -lblas_win64_MT -llapack_win64_MT -larmadillo
 
@@ -52,5 +65,5 @@ INCLUDEPATH += $$PWD/lib/armadillo-9.100.5/include/
 DEPENDPATH += $$PWD/lib/armadillo-9.100.5/include/
 INCLUDEPATH += $$PWD/lib/armadillo-9.100.5/include/armadillo_bits/
 DEPENDPATH += $$PWD/lib/armadillo-9.100.5/include/armadillo_bits/
-
+}
 

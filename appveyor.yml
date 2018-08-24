@@ -2,19 +2,22 @@ image: Visual Studio 2017
 
 install:
   - set PROJECT_DIR=Desktop/Fallturm
-  - set QTDIR=C:\Qt\5.10.1\mingw53_32
+  - set QTDIR=C:\Qt\5.10.1\msvc2017_64
   - choco install -y InnoSetup
-  - set PATH=%QTDIR%\bin;C:\Qt\Tools\mingw530_32\bin;%PATH%;"C:\Program Files (x86)\Inno Setup 5"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - set PATH=%QTDIR%\bin;"C:\Program Files (x86)\Inno Setup 5";%PATH%
+  - cmd: echo %PATH%
 build_script:
   - cd Desktop/Fallturm
-  - qmake Fallturm.pro
-  - mingw32-make
+  - qmake Fallturm.pro -spec win32-msvc
+  - nmake
 after_build:
-  - windeployqt release/Fallturm.exe
+  - windeployqt release/Fallturm.exe --compiler-runtime
   - cmd: cp LICENSE release/LICENSE.txt"
+  - rm -f release/*.o
+  - rm -f release/*.obj
+  - rm -f release/*.cpp
   - iscc innosetup.iss
-  - rm release/*.o
-  - rm release/*.cpp
 
 artifacts:
   - path: Desktop/Fallturm/setup/setup.exe

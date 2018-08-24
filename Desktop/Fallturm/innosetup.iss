@@ -36,8 +36,21 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "release\Fallturm.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "release\vc_redist.x64.exe";  DestDir: "{app}"; Flags: ignoreversion; AfterInstall: installRuntime
 Source: "release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
+[Code]
+procedure installRuntime;
+var
+  ResultCode: Integer;
+begin
+  if not Exec(ExpandConstant('{app}\vc_redist.x64.exe'), '', '', SW_SHOWNORMAL,
+    ewWaitUntilTerminated, ResultCode)
+  then
+    MsgBox('Other installer failed to run!' + #13#10 +
+      SysErrorMessage(ResultCode), mbError, MB_OK);
+end;
 
 [Icons]
 Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
