@@ -63,7 +63,6 @@ void Plot::renderNewPlot()
     //Doing math...
     long startTime = 0;
     int startDistance = 0;
-    int endDistance = 0;
     for(Entry e : entries)
     {
         if(e.led == 0)
@@ -72,8 +71,6 @@ void Plot::renderNewPlot()
             startDistance = e.height;
             break;
         }
-        if(e.led == LED_COUNT-1)
-            endDistance = e.height;
     }
 
     QVector<FallturmMath::Point> points;
@@ -89,22 +86,18 @@ void Plot::renderNewPlot()
 
     //Drawing data
     Logger::log << L_DEBUG << "Drawing data...\n";
-    const unsigned int PLOT_WIDTH = endDistance;
 
     //exakte Messwerte
     QLineSeries *exact = new QLineSeries(this);
     exact->setName("Exakte Messwerte");
-    int pixelToDraw = 0;
-    int pixelDistancePerStep = PLOT_WIDTH / points.size();
     for(FallturmMath::Point p : points)
-    {
-        pixelToDraw+= pixelDistancePerStep;
         exact->append(p.x,p.y);
-    }
 
+    //mathematisch idealisierte Messwerte
+    const unsigned int PLOT_WIDTH = points.last().x;
     QLineSeries *mathIdeal = new QLineSeries(this);
     mathIdeal->setName("idealisierte Messwerte");
-    Logger::log << L_DEBUG << "Drawing " << PLOT_WIDTH << " with " << STEP_SIZE <<" pixels distance...\n";
+    Logger::log << L_DEBUG << "Drawing " << PLOT_WIDTH << " pixels with " << STEP_SIZE <<" pixels distance...\n";
     for(unsigned int pixelToDraw=0;pixelToDraw<PLOT_WIDTH;pixelToDraw+=STEP_SIZE)
     {
         double x = pixelToDraw;
