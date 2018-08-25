@@ -6,6 +6,7 @@
 #include <limits>
 #include <QVector>
 
+namespace FallturmMath{
 struct Point{
     double x;
     double y;
@@ -26,6 +27,15 @@ public:
 
     double f(const double x) const;
 
+    double getA() const;
+    void setA(double value);
+
+    double getB() const;
+    void setB(double value);
+
+    double getC() const;
+    void setC(double value);
+
 private:
     // parabola has the form of y=ax^2 + bx +c
     double a = 0;
@@ -33,5 +43,5 @@ private:
     double c = 0;
     void setCoefficients(double new_a, double new_b, double new_c);
 };
-
+}
 #endif // PARABOLA_H

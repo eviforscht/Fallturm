@@ -14,6 +14,8 @@ build_script:
 after_build:
   - windeployqt release/Fallturm.exe --compiler-runtime
   - cmd: cp LICENSE release/LICENSE.txt"
+  - cmd: cp lib/armadillo-9.100.5/blas_win64_MT.dll release/
+  - cmd: cp lib/armadillo-9.100.5/lapack_win64_MT.dll release/
   - rm -f release/*.o
   - rm -f release/*.obj
   - rm -f release/*.cpp

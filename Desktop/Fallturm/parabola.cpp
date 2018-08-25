@@ -1,4 +1,5 @@
 #include "parabola.h"
+namespace  FallturmMath {
 
 bool Point::compare_double(const double a, const double b, const double eps)
 {
@@ -28,6 +29,36 @@ QVector<double> Parabola::getCoefficients() const
 double Parabola::f(const double x) const
 {
     return a*x*x + b*x + c;
+}
+
+double Parabola::getA() const
+{
+    return a;
+}
+
+void Parabola::setA(double value)
+{
+    a = value;
+}
+
+double Parabola::getB() const
+{
+    return b;
+}
+
+void Parabola::setB(double value)
+{
+    b = value;
+}
+
+double Parabola::getC() const
+{
+    return c;
+}
+
+void Parabola::setC(double value)
+{
+    c = value;
 }
 
 Parabola::Parabola(const QVector<Point> points)
@@ -107,4 +138,5 @@ void Parabola::setCoefficients(double new_a, double new_b, double new_c)
     a = new_a;
     b = new_b;
     c = new_c;
+}
 }
